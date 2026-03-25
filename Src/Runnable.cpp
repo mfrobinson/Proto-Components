@@ -3,7 +3,7 @@
 
 namespace proto {
 
-	Runnable::Runnable() : keep_running(false), done_running(true) {
+	Runnable::Runnable() : keep_running(false), done_running(true), state_mutex_ptr(std::make_unique<std::mutex>()), run_complete_condition_ptr(std::make_unique<std::condition_variable>()) {
 		return;
 	}
 	Runnable::Runnable(Runnable&& other) {
@@ -62,6 +62,11 @@ namespace proto {
 	bool Runnable::running() {
 		std::lock_guard<std::mutex> state_guard(*this->state_mutex_ptr);
 		return this->keep_running || !this->done_running;
+	}
+
+	bool Runnable::should_run() {
+		std::lock_guard<std::mutex> state_guard(*this->state_mutex_ptr);
+		return this->keep_running;
 	}
 
 
