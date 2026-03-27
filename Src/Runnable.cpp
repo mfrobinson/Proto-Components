@@ -27,27 +27,18 @@ namespace proto {
 	}
 
 	void Runnable::run() {
-		if (this->running()) {
+		if (!this->should_start()) {
 			return;
 		}
-
-		std::unique_lock<std::mutex> state_lock(*this->state_mutex_ptr);
-		this->keep_running = true;
-		this->done_running = false;
-		state_lock.unlock();
-
-		this->execute();
-
-		state_lock.lock();
-		this->keep_running = false;
-		this->done_running = true;
-		state_lock.unlock();
-
+		this->internal_run();
 		return;
 	}
 
 	void Runnable::start() {
-		std::thread runner(&Runnable::run, this);
+		if (!this->should_start()) {
+			return;
+		}
+		std::thread runner(&Runnable::internal_run, this);
 		runner.detach();
 		return;
 	}
@@ -87,6 +78,24 @@ namespace proto {
 
 	inline void Runnable::cleanup() {
 		this->stop();
+		return;
+	}
+
+	inline bool Runnable::should_start() {
+		if (this->running()) {
+			return false;
+		}
+		std::lock_guard<std::mutex> state_lock(*this->state_mutex_ptr);
+		this->keep_running = true;
+		this->done_running = false;
+		return true;
+	}
+
+	void Runnable::internal_run() {
+		this->execute();
+		std::lock_guard<std::mutex> state_lock(*this->state_mutex_ptr);
+		this->keep_running = false;
+		this->done_running = true;
 		return;
 	}
 

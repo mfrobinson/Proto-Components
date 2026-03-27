@@ -31,6 +31,10 @@ namespace proto {
 		inline void move_from(Runnable& other);
 		inline void copy_from(const Runnable& other) = delete;
 		inline void cleanup();
+
+		inline bool should_start();
+
+		void internal_run();
 	};
 
 }
