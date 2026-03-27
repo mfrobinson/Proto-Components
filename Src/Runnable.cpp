@@ -1,4 +1,5 @@
 #include "Proto/Runnable.h"
+#include <iostream>
 
 
 namespace proto {
@@ -49,16 +50,25 @@ namespace proto {
 		return;
 	}
 	void Runnable::stop() {
+		std::cout << "1";
 		std::unique_lock<std::mutex> state_lock(*this->state_mutex_ptr);
+		std::cout << "2";
 		state_lock.lock();
+		std::cout << "3";
 		if (this->keep_running == false || this->done_running == true) {
+			std::cout << "4";
 			state_lock.unlock();
+			std::cout << "5";
 			return;
 		}
+		std::cout << "6";
 		this->keep_running = false;
+		std::cout << "7";
 		this->run_complete_condition_ptr->wait(state_lock, [this]() {
+			std::cout << "8";
 			return this->done_running;
 		});
+		std::cout << "9";
 		return;
 	}
 	bool Runnable::running() {
