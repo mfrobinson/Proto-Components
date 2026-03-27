@@ -27,6 +27,7 @@ namespace proto {
 			return;
 		}
 
+
 		std::unique_lock<std::mutex> state_lock(*this->state_mutex_ptr);
 		this->keep_running = true;
 		this->done_running = false;
