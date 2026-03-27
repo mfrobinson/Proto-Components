@@ -7,10 +7,12 @@ namespace proto {
 	Runnable::Runnable() : keep_running(false), done_running(true), state_mutex_ptr(std::make_unique<std::mutex>()), run_complete_condition_ptr(std::make_unique<std::condition_variable>()) {
 		return;
 	}
+
 	Runnable::Runnable(Runnable&& other) {
 		this->move_from(other);
 		return;
 	}
+
 	Runnable& Runnable::operator=(Runnable&& other) {
 		if (&other != this) {
 			this->cleanup();
@@ -18,6 +20,7 @@ namespace proto {
 		}
 		return *this;
 	}
+
 	Runnable::~Runnable() {
 		this->cleanup();
 		return;
@@ -28,9 +31,7 @@ namespace proto {
 			return;
 		}
 
-
 		std::unique_lock<std::mutex> state_lock(*this->state_mutex_ptr);
-		state_lock.lock();
 		this->keep_running = true;
 		this->done_running = false;
 		state_lock.unlock();
@@ -44,33 +45,26 @@ namespace proto {
 
 		return;
 	}
+
 	void Runnable::start() {
 		std::thread runner(&Runnable::run, this);
 		runner.detach();
 		return;
 	}
+
 	void Runnable::stop() {
-		std::cout << "1";
 		std::unique_lock<std::mutex> state_lock(*this->state_mutex_ptr);
-		std::cout << "2";
-		state_lock.lock();
-		std::cout << "3";
 		if (this->keep_running == false || this->done_running == true) {
-			std::cout << "4";
 			state_lock.unlock();
-			std::cout << "5";
 			return;
 		}
-		std::cout << "6";
 		this->keep_running = false;
-		std::cout << "7";
 		this->run_complete_condition_ptr->wait(state_lock, [this]() {
-			std::cout << "8";
 			return this->done_running;
 		});
-		std::cout << "9";
 		return;
 	}
+
 	bool Runnable::running() {
 		std::lock_guard<std::mutex> state_guard(*this->state_mutex_ptr);
 		return this->keep_running || !this->done_running;
@@ -80,7 +74,6 @@ namespace proto {
 		std::lock_guard<std::mutex> state_guard(*this->state_mutex_ptr);
 		return this->keep_running;
 	}
-
 
 	inline void Runnable::move_from(Runnable& other) {
 		this->keep_running = other.keep_running;
@@ -93,6 +86,7 @@ namespace proto {
 		other.run_complete_condition_ptr = std::make_unique<std::condition_variable>();
 		return;
 	}
+
 	inline void Runnable::cleanup() {
 		this->stop();
 		return;
