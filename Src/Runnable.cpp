@@ -96,6 +96,7 @@ namespace proto {
 		std::lock_guard<std::mutex> state_lock(*this->state_mutex_ptr);
 		this->keep_running = false;
 		this->done_running = true;
+		this->run_complete_condition_ptr->notify_all();
 		return;
 	}
 
