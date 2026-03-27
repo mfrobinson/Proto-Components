@@ -39,8 +39,8 @@ namespace proto {
 		this->execute();
 
 		state_lock.lock();
-		this->keep_running = true;
-		this->done_running = false;
+		this->keep_running = false;
+		this->done_running = true;
 		state_lock.unlock();
 
 		return;
