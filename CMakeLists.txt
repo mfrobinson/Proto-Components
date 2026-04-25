@@ -6,12 +6,14 @@ set(CMAKE_CXX_STANDARD 23)
 set(
 	INCLUDES
 	Runnable.h
+	Threadpool.h
 )
 list(TRANSFORM INCLUDES PREPEND "Proto/")
 # Set the source files
 set(
 	SOURCES
 	Runnable.cpp
+	Threadpool.h
 )
 list(TRANSFORM SOURCES PREPEND "Src/")
 
