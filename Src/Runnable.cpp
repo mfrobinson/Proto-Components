@@ -45,9 +45,7 @@ namespace proto {
 
 	void Runnable::stop() {
 		std::unique_lock<std::mutex> state_lock(*this->state_mutex_ptr);
-		if (this->keep_running == true) {
-			this->keep_running = false;
-		}
+		if (this->keep_running) this->keep_running = false;
 		this->run_complete_condition_ptr->wait(state_lock, [this]() {
 			return this->done_running;
 		});
