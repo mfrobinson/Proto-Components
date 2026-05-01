@@ -1,7 +1,8 @@
 #pragma once
 #include <thread>
+#include <stop_token>
+#include <condition_variable>
 #include <mutex>
-#include <memory>
 
 
 namespace proto {
@@ -9,9 +10,9 @@ namespace proto {
 	class Runnable {
 	public:
 		Runnable();
-		Runnable(Runnable&& other);
+		Runnable(Runnable&& other) = delete;
 		Runnable(const Runnable& other) = delete;
-		Runnable& operator=(Runnable&& other);
+		Runnable& operator=(Runnable&& other) = delete;
 		Runnable& operator=(const Runnable& other) = delete;
 		~Runnable();
 
@@ -21,20 +22,19 @@ namespace proto {
 		bool running();
 	protected:
 		virtual void execute() = 0;
+
 		bool should_run();
 	private:
-		bool keep_running;
-		bool done_running;
-		std::unique_ptr<std::mutex> state_mutex_ptr;
-		std::unique_ptr<std::condition_variable> run_complete_condition_ptr;
-
-		inline void move_from(Runnable& other);
-		inline void copy_from(const Runnable& other) = delete;
-		inline void cleanup();
-
-		inline bool should_start();
+		std::jthread runner_thread;
+		std::stop_source stop_source;
+		std::condition_variable_any stop_condition;
+		std::mutex state_mutex;
+		bool currently_running;
 
 		void internal_run();
+
+		inline void set_up_to_run();
+		inline bool internal_running();
 	};
 
 }
