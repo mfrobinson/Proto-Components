@@ -17,7 +17,7 @@ list(TRANSFORM INCLUDES PREPEND "Proto/")
 set(
 	SOURCES
 	Runnable.cpp
-	Threadpool.h
+	Threadpool.cpp
 )
 list(TRANSFORM SOURCES PREPEND "Src/")
 
