@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 23)
 # Set the include files
 set(
 	INCLUDES
+	AppendArgumentTypes.h
+	AppendArgumentTypesTypeContainer.h
+	ExtendStruct.h
+	Reference.h
 	Runnable.h
 	Threadpool.h
 )
