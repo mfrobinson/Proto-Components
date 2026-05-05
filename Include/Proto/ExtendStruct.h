@@ -19,6 +19,7 @@ namespace proto {
 		TExtension extension;
 	};
 
+	template <>
 	struct ExtendStruct<void, void> {
 	};
 
