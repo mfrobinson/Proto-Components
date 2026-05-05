@@ -8,7 +8,7 @@ namespace proto {
 	struct AppendArgumentTypesTypeContainer;
 
 	template <typename TBaseSignature>
-	struct AppendArgumentTypesTypeContainer {
+	struct AppendArgumentTypesTypeContainer<TBaseSignature> {
 		using type = TBaseSignature;
 	};
 
