@@ -7,19 +7,20 @@ set(
 	INCLUDES
 	AppendArgumentTypes.h
 	AppendArgumentTypesTypeContainer.h
-	ExtendStruct.h
 	Reference.h
+	ReferenceTypeContainer.h
+	ExtendStruct.h
 	Runnable.h
 	Threadpool.h
 )
-list(TRANSFORM INCLUDES PREPEND "Proto/")
+list(TRANSFORM INCLUDES PREPEND "Proto/Components/")
 # Set the source files
 set(
 	SOURCES
 	Runnable.cpp
 	Threadpool.cpp
 )
-list(TRANSFORM SOURCES PREPEND "Src/")
+list(TRANSFORM SOURCES PREPEND "Src/Proto/Components/")
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 target_sources (${PROJECT_NAME} PRIVATE ${SOURCES})
