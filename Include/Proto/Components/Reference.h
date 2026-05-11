@@ -1,5 +1,5 @@
 #pragma once
-#include "Proto/ReferenceTypeContainer.h"
+#include "Proto/Components/ReferenceTypeContainer.h"
 
 
 namespace proto {
