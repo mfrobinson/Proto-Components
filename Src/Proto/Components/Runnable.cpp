@@ -17,6 +17,7 @@ namespace proto {
 		{
 			std::lock_guard<std::mutex> state_guard(this->state_mutex);
 			if (this->internal_running()) return;
+			if (!this->on_start()) return;
 			this->set_up_to_run();
 		}
 		this->internal_run();
@@ -26,6 +27,7 @@ namespace proto {
 	void Runnable::start() {
 		std::lock_guard<std::mutex> state_guard(this->state_mutex);
 		if (this->internal_running()) return;
+		if (!this->on_start()) return;
 		this->set_up_to_run();
 		this->runner_thread = std::jthread(&Runnable::internal_run, this);
 		return;
@@ -33,8 +35,10 @@ namespace proto {
 
 	void Runnable::stop() {
 		std::unique_lock<std::mutex> state_lock(this->state_mutex);
+		if (!this->internal_running()) return;
 		this->stop_source.request_stop();
 		std::stop_token stop_token(this->stop_source.get_token());
+		this->on_stop();
 		this->stop_condition.wait(state_lock, stop_token, [this]() {
 			return !this->internal_running();
 		});

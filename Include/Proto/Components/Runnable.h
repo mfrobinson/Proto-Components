@@ -21,7 +21,9 @@ namespace proto {
 		void stop();
 		bool running();
 	protected:
+		virtual bool on_start() = 0;
 		virtual void execute() = 0;
+		virtual void on_stop() = 0;
 
 		bool should_run();
 	private:
