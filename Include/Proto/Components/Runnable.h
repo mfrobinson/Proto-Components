@@ -21,9 +21,16 @@ namespace proto {
 		void stop();
 		bool running();
 	protected:
-		virtual bool on_start() = 0;
+		// Initialisation code to be run on each execution, if false is returned then execution is aborted
+		virtual bool on_start();
+		// What this Runnable should do when it is executed
 		virtual void execute() = 0;
-		virtual void on_stop() = 0;
+		// Method to interrupt the execution (execute method) of this Runnable
+		virtual void interrupt();
+		// Cleanup code to be run after each execution
+		virtual void on_stop();
+		// Cleanup code to be run in the destructor after ensuring execution has stopped
+		virtual void on_cleanup();
 
 		bool should_run();
 	private:

@@ -10,6 +10,23 @@ namespace proto {
 
 	Runnable::~Runnable() {
 		this->stop();
+		this->on_cleanup();
+		return;
+	}
+
+	bool Runnable::on_start() {
+		return true;
+	}
+
+	void Runnable::interrupt() {
+		return;
+	}
+
+	void Runnable::on_stop() {
+		return;
+	}
+
+	void Runnable::on_cleanup() {
 		return;
 	}
 
@@ -17,6 +34,7 @@ namespace proto {
 		{
 			std::lock_guard<std::mutex> state_guard(this->state_mutex);
 			if (this->internal_running()) return;
+			if (this->runner_thread.joinable()) this->runner_thread.join();
 			if (!this->on_start()) return;
 			this->set_up_to_run();
 		}
@@ -27,6 +45,7 @@ namespace proto {
 	void Runnable::start() {
 		std::lock_guard<std::mutex> state_guard(this->state_mutex);
 		if (this->internal_running()) return;
+		if (this->runner_thread.joinable()) this->runner_thread.join();
 		if (!this->on_start()) return;
 		this->set_up_to_run();
 		this->runner_thread = std::jthread(&Runnable::internal_run, this);
@@ -37,8 +56,8 @@ namespace proto {
 		std::unique_lock<std::mutex> state_lock(this->state_mutex);
 		if (!this->internal_running()) return;
 		this->stop_source.request_stop();
+		this->interrupt();
 		std::stop_token stop_token(this->stop_source.get_token());
-		this->on_stop();
 		this->stop_condition.wait(state_lock, stop_token, [this]() {
 			return !this->internal_running();
 		});
@@ -59,6 +78,7 @@ namespace proto {
 		this->execute();
 		std::lock_guard<std::mutex> state_lock(this->state_mutex);
 		this->currently_running = false;
+		this->on_stop();
 		return;
 	}
 
