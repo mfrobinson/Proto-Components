@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace proto {
+namespace proto::components {
 
 	template <typename TBase, typename TExtension>
 	struct ExtendStruct {

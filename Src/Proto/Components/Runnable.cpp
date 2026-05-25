@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 
-namespace proto {
+namespace proto::components {
 
 	Runnable::Runnable() : currently_running(false) {
 		return;

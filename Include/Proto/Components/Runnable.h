@@ -5,7 +5,7 @@
 #include <mutex>
 
 
-namespace proto {
+namespace proto::components {
 
 	class Runnable {
 	public:

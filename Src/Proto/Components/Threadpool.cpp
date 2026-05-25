@@ -1,7 +1,7 @@
 #include "Proto/Components/Threadpool.h"
 
 
-namespace proto {
+namespace proto::components {
 
 	Threadpool::Threadpool() {
 		return;

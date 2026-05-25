@@ -3,7 +3,7 @@
 #include <thread>
 
 
-namespace proto {
+namespace proto::components {
 
 	class Threadpool {
 	public:

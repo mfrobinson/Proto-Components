@@ -2,7 +2,7 @@
 #include "Proto/Components/AppendArgumentTypesTypeContainer.h"
 
 
-namespace proto {
+namespace proto::components {
 
 	template <typename TBaseSignature, typename... TArgumentTypesToAppend>
 	struct AppendArgumentTypesTypeContainer;
