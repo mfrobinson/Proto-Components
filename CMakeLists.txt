@@ -13,13 +13,44 @@ set(
 	Runnable.h
 	Threadpool.h
 )
-list(TRANSFORM INCLUDES PREPEND "Proto/Components/")
+set(
+	WINDOWS_INCLUDES
+	Windows/CompletionPortRunnable.h
+)
+set(
+	APPLE_INCLUDES
+)
+set(
+	UNIX_INCLUDES
+)
 # Set the source files
 set(
 	SOURCES
 	Runnable.cpp
 	Threadpool.cpp
 )
+set(
+	WINDOWS_SOURCES
+	Windows/CompletionPortRunnable.cpp
+)
+set(
+	APPLE_SOURCES
+)
+set(
+	UNIX_SOURCES
+)
+if (WIN32)
+	list(APPEND INCLUDES ${WINDOWS_INCLUDES})
+	list(APPEND SOURCES ${WINDOWS_SOURCES})
+elseif(APPLE)
+	list(APPEND INCLUDES ${APPLE_INCLUDES})
+	list(APPEND SOURCES ${APPLE_SOURCES})
+elseif (UNIX)
+	list(APPEND INCLUDES ${UNIX_INCLUDES})
+	list(APPEND SOURCES ${UNIX_SOURCES})
+endif()
+
+list(TRANSFORM INCLUDES PREPEND "Proto/Components/")
 list(TRANSFORM SOURCES PREPEND "Src/Proto/Components/")
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
