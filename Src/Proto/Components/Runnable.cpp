@@ -85,6 +85,7 @@ namespace proto::components {
 		std::lock_guard<std::mutex> state_lock(this->state_mutex);
 		this->currently_running = false;
 		this->on_stop();
+		this->stop_condition.notify_all();
 		return;
 	}
 
