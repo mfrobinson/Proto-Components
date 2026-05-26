@@ -20,6 +20,7 @@ namespace proto::components {
 		void start();
 		void stop();
 		bool running();
+		void request_stop();
 	protected:
 		// Initialisation code to be run on each execution, if false is returned then execution is aborted
 		virtual bool on_start();

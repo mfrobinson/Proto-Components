@@ -7,6 +7,7 @@ set(
 	INCLUDES
 	AppendArgumentTypes.h
 	AppendArgumentTypesTypeContainer.h
+	ConsoleHandler.h
 	Reference.h
 	ReferenceTypeContainer.h
 	ExtendStruct.h
@@ -15,6 +16,7 @@ set(
 )
 set(
 	WINDOWS_INCLUDES
+	Windows/ConsoleHandler.h
 	Windows/CompletionPortRunnable.h
 )
 set(
@@ -31,6 +33,7 @@ set(
 )
 set(
 	WINDOWS_SOURCES
+	Windows/ConsoleHandler.cpp
 	Windows/CompletionPortRunnable.cpp
 )
 set(

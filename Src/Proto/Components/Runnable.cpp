@@ -10,6 +10,7 @@ namespace proto::components {
 
 	Runnable::~Runnable() {
 		this->stop();
+		if (this->runner_thread.joinable()) this->runner_thread.join();
 		this->on_cleanup();
 		return;
 	}
@@ -68,6 +69,11 @@ namespace proto::components {
 	bool Runnable::running() {
 		std::lock_guard<std::mutex> state_guard(this->state_mutex);
 		return this->internal_running();
+	}
+
+	void Runnable::request_stop() {
+		this->stop_source.request_stop();
+		return;
 	}
 
 	bool Runnable::should_run() {
