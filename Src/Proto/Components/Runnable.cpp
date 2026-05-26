@@ -62,7 +62,6 @@ namespace proto::components {
 		this->stop_condition.wait(state_lock, stop_token, [this]() {
 			return !this->internal_running();
 		});
-		if (this->runner_thread.joinable()) this->runner_thread.join();
 		return;
 	}
 
