@@ -16,6 +16,7 @@ namespace proto::components {
 		virtual bool on_start() override;
 		virtual void interrupt() override;
 		virtual void execute() override;
+		virtual void on_stop() override;
 
 		virtual void handle_completion_packet(DWORD bytes_transferred, ULONG_PTR completion_key, LPOVERLAPPED overlapped) = 0;
 		virtual void cleanup_completion_key(ULONG_PTR completion_key) = 0;
