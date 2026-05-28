@@ -9,21 +9,20 @@ namespace proto::components {
 
 	class ConsoleHandler : public Runnable {
 	public:
-		using Runnable::Runnable;
+		ConsoleHandler();
+		ConsoleHandler(ConsoleHandler&& other) = delete;
+		ConsoleHandler(const ConsoleHandler& other) = delete;
+		ConsoleHandler& operator=(ConsoleHandler&& other) = delete;
+		ConsoleHandler& operator=(const ConsoleHandler& other) = delete;
+		~ConsoleHandler();
 	protected:
-		// Initialisation code to be run on each execution, if false is returned then execution is aborted
-		//virtual bool on_start();
-		// What this Runnable should do when it is executed
+		virtual bool on_start() override;
 		virtual void execute() override;
-		// Method to interrupt the execution (execute method) of this Runnable
-		//virtual void interrupt();
-		// Cleanup code to be run after each execution
-		//virtual void on_stop();
-		// Cleanup code to be run in the destructor after ensuring execution has stopped
-		//virtual void on_cleanup();
+		virtual void on_cleanup() override;
 
 		virtual void handle_input(const std::string& input) = 0;
 	private:
+		HANDLE interrupt_event_handle;
 		inline void set_console_writable(HANDLE& console_handle, bool writable);
 	};
 
