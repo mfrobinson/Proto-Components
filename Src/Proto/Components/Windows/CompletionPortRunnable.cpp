@@ -42,8 +42,8 @@ namespace proto::components {
 		LPOVERLAPPED overlapped = NULL;
 
 		bool result = GetQueuedCompletionStatus(this->completion_port, &bytes_transferred, &completion_key, &overlapped, INFINITE);
-		while (result && completion_key != CompletionPortRunnable::IOCP_SHUTDOWN_KEY) {
-			this->handle_completion_packet(bytes_transferred, completion_key, overlapped);
+		while (completion_key != CompletionPortRunnable::IOCP_SHUTDOWN_KEY) {
+			this->handle_completion_packet(result, bytes_transferred, completion_key, overlapped);
 			if (overlapped != NULL) this->cleanup_overlapped(overlapped);
 			result = GetQueuedCompletionStatus(this->completion_port, &bytes_transferred, &completion_key, &overlapped, INFINITE);
 		}

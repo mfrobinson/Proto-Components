@@ -79,7 +79,7 @@ namespace proto::components {
 		* @param[in] completion_key The unique user-defined identification value to identify what resource was operated on.
 		* @param[in] overlapped A pointer to the standard Windows asynchronous control block structure.
 		*/
-		virtual void handle_completion_packet(DWORD bytes_transferred, ULONG_PTR completion_key, LPOVERLAPPED overlapped) = 0;
+		virtual void handle_completion_packet(bool status, DWORD bytes_transferred, ULONG_PTR completion_key, LPOVERLAPPED overlapped) = 0;
 
 		/**
 		* Abstract lifecycle memory cleanup method for valid completion keys.
