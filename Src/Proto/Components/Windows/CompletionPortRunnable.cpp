@@ -29,9 +29,11 @@ namespace proto::components {
 		DWORD bytes_transferred = 0;
 		ULONG_PTR completion_key = NULL;
 		LPOVERLAPPED overlapped = NULL;
-		while (GetQueuedCompletionStatus(this->completion_port, &bytes_transferred, &completion_key, &overlapped, 0)) {
+		bool success = GetQueuedCompletionStatus(this->completion_port, &bytes_transferred, &completion_key, &overlapped, 0);
+		while (GetLastError() != WAIT_TIMEOUT) {
 			if (overlapped != NULL) this->cleanup_overlapped(overlapped);
 			if (completion_key != NULL && completion_key != CompletionPortRunnable::IOCP_SHUTDOWN_KEY) this->cleanup_completion_key(completion_key);
+			success = GetQueuedCompletionStatus(this->completion_port, &bytes_transferred, &completion_key, &overlapped, 0);
 		}
 		return;
 	}
