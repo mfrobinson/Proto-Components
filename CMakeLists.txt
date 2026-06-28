@@ -13,6 +13,7 @@ set(
 	ExtendStruct.h
 	Runnable.h
 	Threadpool.h
+	SingleThreaded/Timer.h
 )
 set(
 	WINDOWS_INCLUDES
@@ -30,6 +31,7 @@ set(
 	SOURCES
 	Runnable.cpp
 	Threadpool.cpp
+	SingleThreaded/Timer.cpp
 )
 set(
 	WINDOWS_SOURCES

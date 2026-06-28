@@ -1,6 +1,6 @@
 #include "Proto/Components/Runnable.h"
 #include <stdexcept>
-
+#include <iostream>
 
 namespace proto::components {
 
@@ -59,7 +59,7 @@ namespace proto::components {
 		this->stop_source.request_stop();
 		this->interrupt();
 		std::stop_token stop_token(this->stop_source.get_token());
-		this->stop_condition.wait(state_lock, stop_token, [this]() {
+		this->stop_condition.wait(state_lock, [this]() {
 			return !this->internal_running();
 		});
 		return;
